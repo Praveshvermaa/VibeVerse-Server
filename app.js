@@ -8,6 +8,7 @@ const userposts = require('./routes/userPosts');
 const path = require('path')
 const comment = require("./routes/comment")
 const axios = require('axios');
+const AiImageGeneration = require('./routes/AiImageGeneration');
 
 
 
@@ -26,6 +27,7 @@ app.use('/api', userdetails)
 app.use('/api', createPost)
 app.use('/api', userposts)
 app.use('/api', comment)
+app.use('/api', AiImageGeneration);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.get('/', (req, res) => {
