@@ -128,6 +128,43 @@ const getDashboardPosts = async (req, res) => {
   }
 };
 
+// Toggling like on a post (Like / Unlike)
+const toggleLike = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.userid;
+
+    const targetPost = await post.findById(id);
+    if (!targetPost) {
+      return res.status(404).json({ success: false, message: 'Post not found' });
+    }
+
+    if (!targetPost.likes) {
+      targetPost.likes = [];
+    }
+
+    const hasLiked = targetPost.likes.some((likeId) => likeId.toString() === userId);
+
+    if (hasLiked) {
+      targetPost.likes = targetPost.likes.filter((likeId) => likeId.toString() !== userId);
+    } else {
+      targetPost.likes.push(userId);
+    }
+
+    await targetPost.save();
+
+    return res.json({
+      success: true,
+      liked: !hasLiked,
+      likesCount: targetPost.likes.length,
+      likes: targetPost.likes,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: 'Error toggling like', error });
+  }
+};
+
 module.exports = {
   createPost,
   editProfilePicture,
@@ -135,4 +172,5 @@ module.exports = {
   deletePost,
   getUserPosts,
   getDashboardPosts,
+  toggleLike,
 };

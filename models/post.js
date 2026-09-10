@@ -25,6 +25,10 @@ const postSchema = new mongoose.Schema({
     type:'String',
    },
    comments: [commentSchema],
+   likes: [{
+     type: mongoose.Schema.Types.ObjectId,
+     ref: 'user'
+   }],
    sentimentScore:{
     type:Number,
     default:0

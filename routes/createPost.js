@@ -7,6 +7,7 @@ const {
   editProfilePicture,
   getAllPosts,
   deletePost,
+  toggleLike,
 } = require('../controllers/postController');
 
 // Route to create new user post
@@ -17,6 +18,9 @@ router.post('/editpicture', upload.single('profileImage'), verifyToken, editProf
 
 // Routes for fetch all posts that exist in database
 router.get('/allposts', getAllPosts);
+
+// Route to like/unlike post
+router.post('/post/like/:id', verifyToken, toggleLike);
 
 // Delete post
 router.post('/deletePost', verifyToken, deletePost);
